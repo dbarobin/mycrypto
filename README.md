@@ -1,0 +1,2 @@
+# mycrypto
+Count my cryptocurrency.
