@@ -15,6 +15,7 @@
 # Import related class.
 import requests
 import json
+import sys
 
 '''
 Coinmarketcap requests.
@@ -27,8 +28,7 @@ Returns:
     req: coinmarketcap requests.
 '''
 def Coinmarketcap(ticker, convert):
-    url = ('https://api.coinmarketcap.com/v1/ticker/%s/?convert=%s') \
-    % (ticker, convert)
+    url = ('https://api.coinmarketcap.com/v1/ticker/%s/?convert=%s') % (ticker, convert)
     req = requests.get(url)
     return req
 
@@ -51,11 +51,12 @@ def CountCryptoCurrency(file):
     for line in open(file):
         columns = line.split(' ')
         ticker = columns[0]
-        nums = columns[1]
+        nums = columns[1].strip('\n')
         req = Coinmarketcap(ticker, 'CNY')
         for item in req.json():
             price_cny = item['price_cny']
             price_total = float(price_cny) * float(nums)
+            sys.stdout.write('%s %s %s %s\n' % (ticker, price_cny, str(nums), price_total))
             price_all = float(price_all) + float(price_total)
 
     return price_all
